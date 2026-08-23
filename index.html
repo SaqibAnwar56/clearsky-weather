@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0A1128" />
+
+<title>ClearSky — Live Weather Forecast, Hourly & 7-Day Outlook</title>
+<meta name="description" content="Live weather for any city or country — hourly & 7-day forecasts, air quality, UV index and real local time. Free, fast, no sign-up." />
+<meta name="keywords" content="weather, live weather, weather forecast, hourly forecast, 7 day forecast, temperature celsius, air quality index, UV index, wind speed, local weather app" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://clearsky.example.com/" />
+<meta name="author" content="Saqib Anwar" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="ClearSky — Live Weather Forecast, Hourly & 7-Day Outlook" />
+<meta property="og:description" content="Live weather for any city or country — real-time forecasts, air quality, UV index and actual local time." />
+<meta property="og:url" content="https://clearsky.example.com/" />
+<meta property="og:site_name" content="ClearSky" />
+<meta property="og:image" content="https://clearsky.example.com/assets/og-cover.png" />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="ClearSky — Live Weather Forecast" />
+<meta name="twitter:description" content="Live weather for any city — real forecasts, air quality, UV index. Free, no sign-up." />
+<meta name="twitter:image" content="https://clearsky.example.com/assets/og-cover.png" />
+
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="assets/icons/favicon-48x48.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="assets/icons/icon-512.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="css/style.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "ClearSky",
+  "url": "https://clearsky.example.com/",
+  "applicationCategory": "WeatherApplication",
+  "operatingSystem": "Any",
+  "description": "Live weather for any city or country — hourly and 7-day forecasts, air quality, UV index, wind and real local time.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": {
+    "@type": "Person",
+    "name": "Saqib Anwar",
+    "url": "https://github.com/SaqibAnwar56",
+    "sameAs": [
+      "https://github.com/SaqibAnwar56",
+      "https://pk.linkedin.com/in/saqib-anwar-673097351"
+    ]
+  },
+  "creator": {
+    "@type": "Person",
+    "name": "Saqib Anwar"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Saqib Anwar",
+  "url": "https://github.com/SaqibAnwar56",
+  "sameAs": [
+    "https://github.com/SaqibAnwar56",
+    "https://pk.linkedin.com/in/saqib-anwar-673097351"
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="sky" id="sky" aria-hidden="true">
+  <div class="sky__photo" id="skyPhoto"></div>
+  <div class="sky__tint" id="skyTint"></div>
+  <div class="sky__body" id="sunMoon"></div>
+</div>
+
+<div class="app">
+
+  <div id="offlineBanner" class="offline-banner" hidden role="status">
+    <span>⚠</span>
+    <span>You're offline — showing the last saved weather data.</span>
+  </div>
+
+  <!-- ===== Header / Search ===== -->
+  <header class="panel panel--header">
+    <div class="brand">
+      <span class="brand__mark">☀︎</span>
+      <div>
+        <p class="brand__eyebrow">Live Weather</p>
+        <h1 class="brand__title">ClearSky</h1>
+      </div>
+    </div>
+
+    <form class="search" id="searchForm" autocomplete="off" role="search">
+      <input id="searchInput" class="search__input" type="text" placeholder="Search any city or country…" aria-label="Search city or country" />
+      <button type="button" id="voiceBtn" class="btn-icon" title="Search by voice" aria-label="Search by voice">🎙</button>
+      <button type="button" id="locateBtn" class="btn-icon" title="Use my location" aria-label="Use my location">📍</button>
+      <ul id="suggestions" class="suggestions" hidden></ul>
+    </form>
+
+    <div class="header-controls">
+      <span class="unit-badge">°C</span>
+      <button id="themeToggle" class="pill-btn" aria-label="Toggle theme">☾</button>
+    </div>
+  </header>
+
+  <!-- ===== Popular capitals quick access ===== -->
+  <div class="quick-chips" id="quickChips"></div>
+
+  <!-- ===== Loading / Error ===== -->
+  <div id="loadingState" class="state-banner state-banner--loading" hidden>
+    <div class="skeleton-row">
+      <div class="skeleton skeleton--circle"></div>
+      <div class="skeleton skeleton--lines">
+        <div class="skeleton skeleton--line" style="width:60%"></div>
+        <div class="skeleton skeleton--line" style="width:40%"></div>
+      </div>
+    </div>
+  </div>
+  <div id="errorState" class="state-banner state-banner--error" hidden role="alert">
+    <p id="errorMessage">Something went wrong.</p>
+    <button id="errorRetry" class="pill-btn">Try again</button>
+  </div>
+
+  <main id="mainContent" hidden>
+
+    <!-- ===== Current conditions ===== -->
+    <section class="panel panel--current">
+      <div class="current__place">
+        <h2><span id="placeFlag" aria-hidden="true"></span> <span id="placeName">—</span></h2>
+        <p class="dial-label"><span id="placeTime">--:--</span> local time · <span id="placeDesc">—</span></p>
+      </div>
+
+      <div class="current__readout">
+        <div class="current__icon" id="currentIcon" aria-hidden="true"></div>
+        <div class="current__temp">
+          <span id="currentTemp">--</span><span class="unit-mark">°C</span>
+        </div>
+        <div class="current__desc">
+          <p id="currentDesc">—</p>
+          <p id="feelsLike" class="dial-label">Feels like --°C</p>
+        </div>
+      </div>
+
+      <p id="summaryText" class="summary-text">—</p>
+
+      <div class="current__actions">
+        <button id="favBtn" class="pill-btn">☆ Save city</button>
+        <button id="shareBtn" class="pill-btn">Share reading</button>
+        <button id="suggestBtn" class="pill-btn">What should I wear?</button>
+        <button id="downloadBtn" class="pill-btn">Download card</button>
+        <button id="printBtn" class="pill-btn">🖨 Print forecast</button>
+      </div>
+      <p id="suggestText" class="suggest-text" hidden></p>
+    </section>
+
+    <!-- ===== Gauges ===== -->
+    <section class="gauges">
+      <div class="panel gauge">
+        <p class="dial-label">Wind</p>
+        <div class="compass" id="windCompass">
+          <div class="compass__needle" id="windNeedle"></div>
+        </div>
+        <p class="gauge__value"><span id="windSpeed">--</span> <span id="windUnitLabel">km/h</span> <span id="windDir">--</span></p>
+        <p class="dial-label">Gusts <span id="windGust">-- km/h</span></p>
+        <button id="windUnitToggle" class="wind-unit-toggle" type="button">Switch to mph</button>
+      </div>
+      <div class="panel gauge">
+        <p class="dial-label">Humidity</p>
+        <p class="gauge__big" id="humidity">--%</p>
+        <p class="dial-label">Dew point <span id="dewPoint">--°C</span></p>
+      </div>
+      <div class="panel gauge">
+        <p class="dial-label">UV Index</p>
+        <p class="gauge__big" id="uvIndex">--</p>
+        <p class="dial-label" id="uvLabel">—</p>
+      </div>
+      <div class="panel gauge">
+        <p class="dial-label">Air Quality</p>
+        <p class="gauge__big" id="aqiValue">--</p>
+        <p class="dial-label" id="aqiLabel">—</p>
+      </div>
+      <div class="panel gauge">
+        <p class="dial-label">Visibility</p>
+        <p class="gauge__big" id="visibility">-- km</p>
+        <p class="dial-label">Cloud cover <span id="cloudCover">--%</span></p>
+      </div>
+      <div class="panel gauge">
+        <p class="dial-label">Sun &amp; Moon</p>
+        <div class="sun-arc" id="sunArcMini">
+          <svg viewBox="0 0 120 70"><path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="var(--line)" stroke-width="1.5"/><circle id="sunDot" cx="10" cy="60" r="4" fill="var(--accent)"/></svg>
+        </div>
+        <p class="dial-label"><span id="sunriseTime">--:--</span> ↑ &nbsp; <span id="sunsetTime">--:--</span> ↓</p>
+        <p class="dial-label" id="moonPhase">—</p>
+      </div>
+    </section>
+
+    <!-- ===== Best day highlight ===== -->
+    <section class="panel">
+      <p class="section-label">This Week</p>
+      <div class="best-day" id="bestDay">
+        <div class="best-day__icon" id="bestDayIcon"></div>
+        <p class="best-day__text" id="bestDayText">—</p>
+      </div>
+    </section>
+
+    <!-- ===== Hourly ===== -->
+    <section class="panel">
+      <p class="section-label">Next 24 Hours — Precipitation Chance</p>
+      <div class="hourly-scroll" id="hourlyScroll"></div>
+    </section>
+
+    <!-- ===== Charts ===== -->
+    <section class="panel">
+      <p class="section-label">Next 24 Hours — Temperature (°C)</p>
+      <canvas id="hourlyTempChart" height="80"></canvas>
+    </section>
+
+    <section class="panel">
+      <p class="section-label">7-Day Temperature Trend (°C)</p>
+      <canvas id="trendChart" height="90"></canvas>
+    </section>
+
+    <!-- ===== 7-day forecast ===== -->
+    <section class="panel">
+      <p class="section-label">7-Day Forecast</p>
+      <div class="forecast-grid" id="forecastGrid"></div>
+    </section>
+
+    <!-- ===== Map ===== -->
+    <section class="panel">
+      <p class="section-label">Location</p>
+      <div id="map" class="map"></div>
+    </section>
+
+    <!-- ===== Saved cities comparison ===== -->
+    <section class="panel" id="savedSection" hidden>
+      <p class="section-label">Saved Cities</p>
+      <div class="saved-grid" id="savedGrid"></div>
+    </section>
+
+    <!-- ===== About the developer ===== -->
+    <section class="panel panel--about">
+      <p class="section-label">About the Developer</p>
+      <div class="about-dev">
+        <div class="about-dev__avatar" aria-hidden="true">SA</div>
+        <div class="about-dev__info">
+          <h3>Saqib Anwar</h3>
+          <p class="dial-label">Web Developer · Creator of ClearSky</p>
+          <div class="about-dev__links">
+            <a href="https://github.com/SaqibAnwar56" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+              GitHub
+            </a>
+            <a href="https://pk.linkedin.com/in/saqib-anwar-673097351" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M14.82 0H1.18C.53 0 0 .52 0 1.16v13.68C0 15.48.53 16 1.18 16h13.64c.65 0 1.18-.52 1.18-1.16V1.16C16 .52 15.47 0 14.82 0ZM4.75 13.65H2.4V6.14h2.35v7.51ZM3.58 5.13a1.36 1.36 0 1 1 0-2.72 1.36 1.36 0 0 1 0 2.72Zm10.07 8.52h-2.35V10c0-.87-.02-2-1.22-2-1.22 0-1.4.95-1.4 1.93v3.72H6.33V6.14h2.25v1.03h.03c.32-.6 1.08-1.22 2.23-1.22 2.38 0 2.82 1.57 2.82 3.6v4.1Z"/></svg>
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Built by <a href="https://github.com/SaqibAnwar56" target="_blank" rel="noopener noreferrer">Saqib Anwar</a> · Weather data — Open‑Meteo · Reverse geocoding — BigDataCloud</p>
+    <p>Temperatures shown in Celsius · ClearSky</p>
+    <p>Shortcuts: <kbd>/</kbd> search · <kbd>L</kbd> use my location · <kbd>Esc</kbd> close suggestions</p>
+  </footer>
+</div>
+
+<div id="toast" class="toast" hidden role="status">
+  <span id="toastMessage"></span>
+  <button id="toastClose" aria-label="Dismiss">✕</button>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+<script src="js/config.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/weather-codes.js"></script>
+<script src="js/country-capitals.js"></script>
+<script src="js/moon.js"></script>
+<script src="js/background.js"></script>
+<script src="js/api.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/map.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

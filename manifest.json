@@ -1,0 +1,17 @@
+{
+  "name": "ClearSky — Live Weather Forecast",
+  "short_name": "ClearSky",
+  "description": "Live weather station with hourly and 7-day forecasts, air quality, UV index, wind and an interactive map. Temperatures in Celsius.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0A1128",
+  "theme_color": "#0A1128",
+  "icons": [
+    { "src": "assets/icons/favicon-16x16.png", "sizes": "16x16", "type": "image/png" },
+    { "src": "assets/icons/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
