@@ -1,112 +1,362 @@
-# ClearSky — Live Weather Forecast
+# 🌌 ClearSky
 
-**🔗 Live site: [clearsky-weather-sepia.vercel.app](https://clearsky-weather-sepia.vercel.app/)**
+### ✦ Live Weather · Real Cities · Beautifully Presented
 
-A full-featured weather website built with plain HTML, CSS and JavaScript — no build step, no framework, no API keys required. Vivid glassmorphism design over a deep twilight gradient, with a real photo of the searched city fading in behind it. **All temperatures are shown in Celsius only.**
+<div align="center">
 
-## Features
+<a href="https://clearsky-weather-sepia.vercel.app/">
+  <img src="https://img.shields.io/badge/🌤️%20LIVE%20DEMO-Visit%20ClearSky-7c3aed?style=for-the-badge" />
+</a>
 
-- **Always your real current location** — every time the app opens, it detects your actual current location (falls back to your last-viewed city only if location access is denied or unavailable)
-- **Smart country search** — search a country name (e.g. "Pakistan", "Australia") and get its capital city's weather, tagged with a "Capital" badge
-- **Real photo backgrounds** — a real photo of the searched city (via Wikipedia's free image API) fades in behind the app, tinted to match the current weather and time of day; hardened with multi-title lookup, a 4.5s timeout, a persistent 30-day cache, and rotating weather-mood fallback photos
-- **Real local time zone clock** — shows the searched city's actual local time (via its IANA time zone), ticking live — not your browser's time
-- **Country flag** shown next to the city name, plus one-tap chips for popular capitals (Islamabad, London, Tokyo, Dubai, etc.)
-- **Graceful error handling** — if a background refresh fails, the last good reading stays on screen with a small dismissible toast instead of a full-page error
-- **Print-friendly forecast** — a "Print forecast" button produces a clean, black-and-white printable version
-- **Downloadable weather card** — exports current conditions as a PNG image
-- Offline detection banner · Wind speed unit toggle (km/h ↔ mph) · "Best day this week" highlight
-- Hourly temperature chart + 7-day trend chart (Chart.js)
-- Keyboard shortcuts — `/` focus search, `L` use my location, `Esc` close suggestions
-- City search with live autocomplete, voice search (Web Speech API), geolocation with reverse geocoding
-- Current conditions, feels-like, wind compass with gusts, humidity, dew point, cloud cover, visibility
-- UV index and air quality index, each with plain-language guidance
-- Sunrise/sunset with a visual sun-arc indicator, plus moon phase
-- 7-day forecast grid and an interactive map (Leaflet + OpenStreetMap)
-- Dark/light theme toggle, save/compare favorite cities, recent search history — all persisted locally
-- Outfit/activity suggestion, auto-generated daily summary sentence
-- Installable PWA with offline app-shell caching
-- SEO-ready: meta tags, Open Graph + Twitter cards, JSON-LD structured data, `robots.txt`, `sitemap.xml`
-- Fully responsive, keyboard-accessible, respects reduced-motion
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
 
-## Project structure
+<br><br>
 
+**A modern, glassmorphism weather dashboard built with pure HTML, CSS & JavaScript.**
+
+Real-time weather · Local time · City photography · Forecasts · Maps · Charts
+
+</div>
+
+---
+
+## ✨ Experience the Weather Differently
+
+ClearSky turns ordinary weather data into a **beautiful visual experience**.
+
+🌤️ Dynamic weather UI
+📍 Automatic location detection
+🏙️ Real city photography
+🕐 Live local timezone
+📊 Interactive forecasts
+🗺️ Interactive maps
+🌙 Dark / Light themes
+📱 Fully responsive
+
+---
+
+## 🎨 Design
+
+<div align="center">
+
+### Glassmorphism × Twilight Gradients × Real Cities
+
+</div>
+
+ClearSky uses a cinematic interface with:
+
+```text
+╭──────────────────────────────────────────────╮
+│                                              │
+│        🌙  ISLAMABAD                         │
+│                                              │
+│             28°C                             │
+│        Partly Cloudy                         │
+│                                              │
+│   💧 72%     🌬️ 14 km/h     ☀️ UV 6         │
+│                                              │
+╰──────────────────────────────────────────────╯
 ```
+
+The background dynamically changes according to:
+
+**Weather + Time of Day + City**
+
+---
+
+## ⚡ Features
+
+|     | Feature             |                                    |
+| --- | ------------------- | ---------------------------------- |
+| 📍  | **Live Location**   | Detects your actual location       |
+| 🔎  | **Smart Search**    | Search cities or countries         |
+| 🏛️ | **Capital Search**  | Country → capital automatically    |
+| 🏙️ | **Real Photos**     | Dynamic city backgrounds           |
+| 🕐  | **Local Clock**     | Actual city timezone               |
+| 🌡️ | **Live Conditions** | Temperature, feels-like & humidity |
+| 🌬️ | **Wind System**     | Speed, gusts & compass             |
+| 🌫️ | **Air Quality**     | AQI & plain-language guidance      |
+| ☀️  | **UV Index**        | UV level + safety guidance         |
+| 🌅  | **Sun & Moon**      | Sunrise, sunset & moon phase       |
+| 📊  | **Charts**          | Hourly + 7-day trends              |
+| 🗺️ | **Weather Map**     | Leaflet + OpenStreetMap            |
+| ⭐   | **Favorites**       | Save & compare cities              |
+| 🎙️ | **Voice Search**    | Web Speech API                     |
+| 🖼️ | **Weather Card**    | Download as PNG                    |
+| 🖨️ | **Print Mode**      | Clean printable forecast           |
+| 📱  | **PWA**             | Installable + offline shell        |
+| 🌓  | **Themes**          | Dark / light mode                  |
+
+---
+
+## 🌦️ Weather Dashboard
+
+ClearSky gives you everything important at a glance.
+
+### Current
+
+**Temperature · Feels Like · Humidity · Dew Point · Wind · Gusts · Cloud Cover · Visibility**
+
+### Forecast
+
+**Hourly temperature → 7-day forecast → Weekly trend → Best day**
+
+### Environment
+
+**AQI · UV Index · Sunrise · Sunset · Moon Phase**
+
+All temperatures are displayed in **°C**.
+
+---
+
+## 🏙️ Real City Backgrounds
+
+No boring generic weather backgrounds.
+
+ClearSky searches for **real photographs of the selected city** through Wikipedia and Wikimedia.
+
+The background engine includes:
+
+* Multi-title image lookup
+* 4.5s timeout protection
+* 30-day persistent cache
+* Weather-mood fallbacks
+* Day/night adaptation
+* Dynamic weather tinting
+
+If an image fails, the weather experience **keeps working**.
+
+---
+
+## 🌍 Smart Search
+
+Search a city:
+
+```text
+Islamabad
+Tokyo
+London
+Dubai
+Sydney
+New York
+```
+
+Or simply search:
+
+```text
+Pakistan
+Australia
+Japan
+United Kingdom
+UAE
+```
+
+ClearSky automatically resolves the country to its capital and displays:
+
+> 🏛️ **Capital**
+
+---
+
+## 🧠 Smart UX
+
+### Keyboard
+
+| Key   | Action            |
+| ----- | ----------------- |
+| `/`   | Search            |
+| `L`   | My Location       |
+| `Esc` | Close suggestions |
+
+### Units
+
+```text
+🌬️ km/h  ⇄  mph
+```
+
+### Suggestions
+
+ClearSky can generate contextual:
+
+**👕 Outfit suggestions**
+**🏃 Activity suggestions**
+**☀️ UV guidance**
+**🌫️ Air-quality guidance**
+**📝 Daily weather summary**
+
+---
+
+## 🛠️ Built With
+
+<div align="center">
+
+| Technology         | Purpose           |
+| ------------------ | ----------------- |
+| **HTML5**          | Structure         |
+| **CSS3**           | Glassmorphism UI  |
+| **JavaScript**     | Application logic |
+| **Open-Meteo**     | Weather data      |
+| **Wikipedia API**  | City photography  |
+| **Chart.js**       | Weather charts    |
+| **Leaflet**        | Interactive maps  |
+| **OpenStreetMap**  | Map tiles         |
+| **BigDataCloud**   | Reverse geocoding |
+| **Web Speech API** | Voice search      |
+| **Service Worker** | Offline support   |
+
+</div>
+
+### 🚫 No Framework
+
+```text
+No React
+No Vue
+No Angular
+No build step
+No API keys
+No backend
+No .env
+```
+
+Just **HTML + CSS + JavaScript**.
+
+---
+
+## 📂 Project Structure
+
+```text
 clearsky-weather/
-├── index.html                SEO meta tags + structured data + markup
-├── manifest.json              PWA manifest
-├── robots.txt                  Search engine crawl rules
-├── sitemap.xml                  Search engine sitemap
-├── sw.js                          Service worker (offline app-shell cache)
-├── vercel.json                     Vercel deployment config
-├── favicon.ico
+│
+├── index.html
+├── manifest.json
+├── sw.js
+├── vercel.json
+├── robots.txt
+├── sitemap.xml
+│
 ├── assets/
-│   ├── og-cover.png                 Social share preview image (1200×630)
-│   └── icons/                        Favicon set (16/32/48/192/512px + Apple touch icon)
+│   ├── og-cover.png
+│   └── icons/
+│
 ├── css/
-│   └── style.css                     Design tokens + components + print styles
-├── js/
-│   ├── config.js                      API endpoint configuration
-│   ├── storage.js                      localStorage persistence helpers
-│   ├── weather-codes.js                 WMO weather code → label/icon/gradient map
-│   ├── country-capitals.js               Country name → capital city smart lookup
-│   ├── moon.js                            Moon phase calculator (no API needed)
-│   ├── background.js                       Real city photo fetcher (Wikipedia, no key)
-│   ├── api.js                               Fetch wrappers (geocoding, forecast, air quality)
-│   ├── charts.js                             Trend + hourly temperature charts
-│   ├── map.js                                 Leaflet map wrapper
-│   ├── voice.js                                Web Speech API wrapper
-│   ├── ui.js                                    DOM rendering functions
-│   └── app.js                                    App state + event wiring (entry point)
-└── README.md
+│   └── style.css
+│
+└── js/
+    ├── app.js
+    ├── api.js
+    ├── ui.js
+    ├── charts.js
+    ├── map.js
+    ├── background.js
+    ├── weather-codes.js
+    ├── country-capitals.js
+    ├── storage.js
+    ├── moon.js
+    ├── voice.js
+    └── config.js
 ```
 
-## APIs used (all free, no signup or API key required)
+---
 
-- **Weather & forecast:** [Open-Meteo](https://open-meteo.com) — `api.open-meteo.com`
-- **City search:** Open-Meteo Geocoding — `geocoding-api.open-meteo.com`
-- **Air quality:** Open-Meteo Air Quality — `air-quality-api.open-meteo.com`
-- **Reverse geocoding:** [BigDataCloud](https://www.bigdatacloud.com/) client-side API
-- **City photos:** Wikipedia REST API and Wikimedia Commons (fallback photos)
-- **Map tiles:** OpenStreetMap via Leaflet
-
-No `.env` file or secret key is needed anywhere in this project.
-
-## Running locally
+## 🚀 Run
 
 ```bash
 python3 -m http.server 8080
-# or
+```
+
+Open:
+
+```text
+http://localhost:8080
+```
+
+Or:
+
+```bash
 npx serve .
 ```
 
-Then open `http://localhost:8080`.
+---
 
-## Deploying to Vercel
+## ☁️ Deploy
+
+### Vercel
 
 ```bash
 npm i -g vercel
 vercel --prod
 ```
 
-Or push to GitHub and import the repo at [vercel.com/new](https://vercel.com/new) — it auto-detects as a static site, no build command needed. `vercel.json` is already included with security headers and clean URLs.
+Or simply import the repository into Vercel.
 
-If you move to a custom domain later, replace every occurrence of `clearsky-weather-sepia.vercel.app` in `index.html`, `robots.txt`, `sitemap.xml`, and `css/style.css` with the new domain, then resubmit `sitemap.xml` to [Google Search Console](https://search.google.com/search-console) and [Bing Webmaster Tools](https://www.bing.com/webmasters).
+**No build command required.**
 
-## Notes & known limitations
+---
 
-- Voice search requires a browser with the Web Speech API (Chrome, Edge) — fails gracefully elsewhere.
-- The service worker caches the app shell only; weather data is always fetched fresh when online, falling back to the last cached response offline.
-- Air quality, UV index, visibility, and reverse geocoding calls fail gracefully, showing `--` instead of breaking.
-- Country → capital search covers ~190 countries and common short names (USA, UK, UAE); unrecognized ones fall back to a normal city search.
-- If a fetch fails while data is already showing, the app keeps the last successful reading visible and shows a toast instead of a blocking error.
+## 📱 PWA
 
-## Customizing
+ClearSky can be installed directly from supported browsers.
 
-- Colors, type, and spacing are CSS custom properties at the top of `css/style.css` — edit the `:root` block to re-theme the app.
-- Weather icons are inline SVG in `js/weather-codes.js`.
-- Popular capital chips are set in `js/country-capitals.js` (`POPULAR_CAPITALS` array).
+```text
+⚡ Fast App Shell
+📴 Offline UI
+🔄 Fresh Weather Online
+📲 Installable
+```
 
-## Author
+Weather data is refreshed whenever the connection is available.
 
-**Saqib Anwar**
-[GitHub](https://github.com/SaqibAnwar56) · [LinkedIn](https://pk.linkedin.com/in/saqib-anwar-673097351)
+---
+
+## 🎯 Lightweight. Fast. Beautiful.
+
+ClearSky was designed around one idea:
+
+> **Weather information should be useful — but it should also feel beautiful.**
+
+No complicated setup.
+
+No API keys.
+
+No framework overhead.
+
+Just a polished weather experience running directly in the browser.
+
+---
+
+## 👨‍💻 Created By
+
+<div align="center">
+
+### Saqib Anwar
+
+<a href="https://github.com/SaqibAnwar56">
+<img src="https://img.shields.io/badge/GitHub-SaqibAnwar56-181717?style=for-the-badge&logo=github" />
+</a>
+
+<a href="https://pk.linkedin.com/in/saqib-anwar-673097351">
+<img src="https://img.shields.io/badge/LinkedIn-Saqib%20Anwar-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" />
+</a>
+
+<br><br>
+
+**Made with ❤️ and JavaScript**
+
+<br>
+
+<a href="https://clearsky-weather-sepia.vercel.app/">
+<img src="https://img.shields.io/badge/🌌%20OPEN%20CLEARSKY-7c3aed?style=for-the-badge" />
+</a>
+
+</div>
+
+---
+
+<div align="center">
+
+### ⭐ If you like ClearSky, give the repository a star!
+
+**🌤️ Real Weather · 🌍 Real Cities · ✨ Beautiful UI**
+
+</div>
