@@ -391,7 +391,7 @@ a{ color: var(--accent-2); }
   canvas{ max-width: 100%; }
 
   .panel--current::after{
-    content: "Printed from ClearSky — clearsky.example.com — " attr(data-print-date);
+    content: "Printed from ClearSky — clearsky-weather-sepia.vercel.app — " attr(data-print-date);
     display: block; font-size: 10px; color: #888; margin-top: 10px;
   }
 }
