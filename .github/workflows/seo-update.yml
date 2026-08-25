@@ -1,0 +1,119 @@
+name: One-time SEO update
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  seo-update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update homepage SEO
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+
+          old_desc = 'Live weather for any city or country — hourly & 7-day forecasts, air quality, UV index and real local time. Free, fast, no sign-up.'
+          new_desc = 'ClearSky is a free live weather forecast app with current conditions, hourly weather, 7-day forecasts, air quality, UV index, wind, visibility and local time for cities worldwide.'
+          html = html.replace(old_desc, new_desc, 1)
+
+          old_og_desc = 'Live weather for any city or country — real-time forecasts, air quality, UV index and actual local time.'
+          new_og_desc = 'Check live weather, hourly forecasts and 7-day outlooks for cities worldwide, plus air quality, UV index, wind and local time.'
+          html = html.replace(old_og_desc, new_og_desc, 1)
+
+          marker = '<main id="mainContent" hidden>'
+          seo = '''
+  <!-- ===== Crawlable SEO introduction ===== -->
+  <section class="seo-intro" aria-labelledby="seo-title">
+    <h2 id="seo-title">Live Weather Forecast for Cities Worldwide</h2>
+    <p>ClearSky provides free, fast weather forecasts for cities and countries around the world. Search for a location to see current temperature, feels-like temperature, weather conditions, wind speed, humidity, visibility, UV index and air quality.</p>
+    <div class="seo-grid">
+      <article>
+        <h3>Hourly Weather Forecast</h3>
+        <p>View the next 24 hours of temperature and precipitation chances so you can plan your day with up-to-date weather information.</p>
+      </article>
+      <article>
+        <h3>7-Day Weather Forecast</h3>
+        <p>Compare daily temperatures and weather conditions across the next seven days with an easy-to-read forecast.</p>
+      </article>
+      <article>
+        <h3>Weather Details</h3>
+        <p>Check wind direction, humidity, dew point, UV index, air quality, cloud cover, visibility, sunrise, sunset and local time.</p>
+      </article>
+    </div>
+    <p class="seo-note"><strong>Search any city or country</strong> above to get its latest available forecast. ClearSky is free to use and does not require an account.</p>
+  </section>
+
+'''
+          if marker in html and 'id="seo-title"' not in html:
+              html = html.replace(marker, seo + marker, 1)
+
+          css_marker = '<link rel="stylesheet" href="css/style.css" />'
+          css = '''
+<style>
+.seo-intro{max-width:1100px;margin:1rem auto 1.5rem;padding:1.5rem 1.75rem;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+.seo-intro h2{margin:0 0 .65rem;font-size:clamp(1.35rem,2.5vw,2rem)}
+.seo-intro p{line-height:1.65;margin:.55rem 0}
+.seo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:1rem 0}
+.seo-grid article{padding:1rem;border-radius:14px;background:rgba(255,255,255,.045)}
+.seo-grid h3{margin:0 0 .4rem;font-size:1.05rem}
+.seo-grid p{font-size:.94rem;margin:0}
+.seo-note{margin-top:1rem}
+@media(max-width:760px){.seo-grid{grid-template-columns:1fr}.seo-intro{padding:1.2rem}}
+</style>
+'''
+          if css_marker in html and 'class="seo-intro"' not in html.split(css_marker,1)[0]:
+              html = html.replace(css_marker, css_marker + css, 1)
+
+          schema_marker = '</head>'
+          schema = '''
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"ClearSky",
+  "url":"https://clearsky-weather-sepia.vercel.app/",
+  "description":"Free live weather forecasts, hourly weather and 7-day outlooks for cities worldwide.",
+  "potentialAction":{
+    "@type":"SearchAction",
+    "target":"https://clearsky-weather-sepia.vercel.app/?city={search_term_string}",
+    "query-input":"required name=search_term_string"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"What is ClearSky?","acceptedAnswer":{"@type":"Answer","text":"ClearSky is a free weather web app for checking current conditions, hourly forecasts and 7-day weather outlooks for cities worldwide."}},
+    {"@type":"Question","name":"What weather information does ClearSky provide?","acceptedAnswer":{"@type":"Answer","text":"ClearSky provides temperature, feels-like temperature, precipitation chances, wind, humidity, dew point, UV index, air quality, visibility, cloud cover, sunrise, sunset and local time."}},
+    {"@type":"Question","name":"Is ClearSky free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. ClearSky is free to use and does not require an account."}}
+  ]
+}
+</script>
+'''
+          if '"@type":"WebSite"' not in html:
+              html = html.replace(schema_marker, schema + schema_marker, 1)
+
+          path.write_text(html, encoding='utf-8')
+
+      - name: Commit SEO update and remove one-time workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/seo-update.yml
+          git commit -m "Improve homepage SEO for Google Search"
+          git push
